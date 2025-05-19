@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Toko Online Keren</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    :root {
+      --primary-color: #0080ff;
+      --secondary-color: #ff8000;
+      --text-color: #333;
+      --bg-color: #f0f8ff;
+      --card-bg: #fff;
+      --footer-bg: #2c3e50;
+      --shadow-color: rgba(0, 0, 0, 0.1);
+    }
+    
+    .dark-mode {
+      --primary-color: #004e9e;
+      --secondary-color: #ff6000;
+      --text-color: #e6e6e6;
+      --bg-color: #1a1a2e;
+      --card-bg: #242438;
+      --footer-bg: #0f172a;
+      --shadow-color: rgba(0, 0, 0, 0.4);
+    }
+    
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background-color 0.5s ease, color 0.5s ease;
+      overflow-x: hidden;
+      position: relative;
+    }
+    
+    .night-stars {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+    }
+    
+    .dark-mode .night-stars {
+      display: block;
+    }
+    
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 2s infinite alternate;
+    }
+    
+    @keyframes twinkle {
+      0% { opacity: 0.2; }
+      100% { opacity: 1; transform: scale(1.5); }
+    }
+    
+    .header {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: white;
+      text-align: center;
+      padding: 2rem 0 1rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 4px 12px var(--shadow-color);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+    
+    .navbar {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin: 1rem 0;
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 0.5rem;
+      border-radius: 50px;
+    }
+    
+    .nav-button {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 50px;
+      background-color: rgba(255, 255, 255, 0.2);
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+    }
+    
+    .nav-button:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+    }
+    
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin: 1rem 0;
+      flex-wrap: wrap;
+    }
+    
+    .control-btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 50px;
+      background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 8px var(--shadow-color);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .control-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px var(--shadow-color);
+    }
+    
+    .theme-toggle {
+      background: var(--primary-color);
+    }
+    
+    .music-toggle {
+      background: var(--secondary-color);
+    }
+    
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+    
+    .product-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 6px 15px var(--shadow-color);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .product-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 12px 20px var(--shadow-color);
+    }
+    
+    .product-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    
+    .product-info {
+      padding: 1.5rem;
+    }
+    
+    .product-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--text-color);
+    }
+    
+    .product-price {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--secondary-color);
+      margin-bottom: 1rem;
+    }
+    
+    .btn-whatsapp {
+      display: inline-block;
+      background: linear-gradient(to right, #25d366, #128C7E);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(37, 211, 102, 0.3);
+    }
+    
+    .btn-whatsapp:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 12px rgba(37, 211, 102, 0.4);
+    }
+    
+    .footer {
+      background-color: var(--footer-bg);
+      color: white;
+      padding: 3rem 0 1rem;
+      margin-top: 3rem;
+    }
+    
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+    
+    .footer-section h3 {
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+      position: relative;
+      padding-bottom: 0.5rem;
+    }
+    
+    .footer-section h3::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 50px;
+      height: 3px;
+      background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    }
+    
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+    
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .social-links {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .social-link {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      font-size: 1.2rem;
+    }
+    
+    .social-link:hover {
+      background-color: var(--primary-color);
+      transform: translateY(-5px);
+    }
+    
+    .footer-bottom {
+      text-align: center;
+      padding-top: 2rem;
+      margin-top: 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    /* Weather Effects */
+    .weather-effect {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 100;
+      opacity: 0.7;
+    }
+    
+    /* Snow Animation */
+    .snowflake {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      opacity: 0.8;
+      animation: snowfall linear infinite;
+    }
+    
+    @keyframes snowfall {
+      0% {
+        transform: translateY(-10px) translateX(0) rotate(0deg);
+      }
+      100% {
+        transform: translateY(calc(100vh + 10px)) translateX(20px) rotate(360deg);
+      }
+    }
+    
+    /* Rain Animation */
+    .raindrop {
+      position: absolute;
+      width: 2px;
+      background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(30,144,255,0.5));
+      animation: rainfall linear infinite;
+    }
+    
+    @keyframes rainfall {
+      0% {
+        transform: translateY(-100px);
+      }
+      100% {
+        transform: translateY(calc(100vh + 100px));
+      }
+    }
+    
+    /* Sunny Animation */
+    .sun {
+      position: absolute;
+      top: 50px;
+      right: 50px;
+      width: 80px;
+      height: 80px;
+      background: radial-gradient(circle, #ffff00, #ff8c00);
+      border-radius: 50%;
+      box-shadow: 0 0 40px #ffff00;
+      animation: sun-pulse 3s infinite alternate;
+    }
+    
+    @keyframes sun-pulse {
+      0% {
+        box-shadow: 0 0 40px #ffff00;
+        transform: scale(1);
+      }
+      100% {
+        box-shadow: 0 0 60px #ffff00;
+        transform: scale(1.1);
+      }
+    }
+    
+    /* Weather Controls */
+    .weather-controls {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin: 1rem 0;
+      flex-wrap: wrap;
+    }
+    
+    .weather-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 50px;
+      background: linear-gradient(to right, var(--primary-color), #005bb5);
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 8px var(--shadow-color);
+    }
+    
+    .weather-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px var(--shadow-color);
+    }
+    
+    .weather-btn:nth-child(2) {
+      background: linear-gradient(to right, #0080ff, #00b3ff);
+    }
+    
+    .weather-btn:nth-child(3) {
+      background: linear-gradient(to right, #ff8000, #ffb700);
+    }
+    
+    .weather-emoji {
+      font-size: 1.2rem;
+    }
+    
+    /* Music Player */
+    .music-player {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1001;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 10px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+    
+    .music-icon {
+      font-size: 1.5rem;
+      color: white;
+      cursor: pointer;
+    }
+    
+    /* Info Section */
+    .info-section {
+      display: none;
+      background-color: var(--card-bg);
+      padding: 2rem;
+      border-radius: 12px;
+      margin: 2rem 0;
+      box-shadow: 0 6px 15px var(--shadow-color);
+    }
+    
+    .info-section.active {
+      display: block;
+      animation: fadeIn 0.5s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .info-section h2 {
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+      font-size: 1.8rem;
+    }
+    
+    .info-section p {
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+    
+    /* Scroll to top button */
+    .scroll-top {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      z-index: 1000;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .scroll-top.visible {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="night-stars" id="stars-container"></div>
+  
+  <div class="header">
+    <div class="container">
+      <h1>Toko Online Keren</h1>
+      <p>Temukan produk berkualitas dengan harga terbaik</p>
+      
+      <div class="navbar">
+        <button class="nav-button" id="home-btn">🏠 Home</button>
+        <button class="nav-button" id="info-btn">ℹ️ Informasi</button>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container">
+    <div class="controls">
+      <button class="control-btn theme-toggle" onclick="toggleTheme()">
+        🌓 Mode Gelap/Terang
+      </button>
+      <button class="control-btn music-toggle" onclick="toggleMusic()">
+        🎵 Musik On/Off
+      </button>
+    </div>
+    
+    <div class="weather-controls">
+      <button class="weather-btn" onclick="activateSnow()">
+        <span class="weather-emoji">❄️</span> Salju
+      </button>
+      <button class="weather-btn" onclick="activateRain()">
+        <span class="weather-emoji">🌧️</span> Hujan
+      </button>
+      <button class="weather-btn" onclick="activateSunny()">
+        <span class="weather-emoji">☀️</span> Cerah
+      </button>
+    </div>
+    
+    <div id="info-section" class="info-section">
+      <h2>Tentang Toko Kami</h2>
+      <p>Selamat datang di Toko Online Keren! Kami menyediakan berbagai produk berkualitas dengan harga terbaik. Toko kami berdiri sejak tahun 2020 dan berkomitmen untuk memberikan pelayanan terbaik kepada pelanggan.</p>
+      <p>Semua produk yang kami jual adalah produk asli dengan garansi resmi. Kami juga menyediakan layanan pengiriman ke seluruh Indonesia dengan berbagai pilihan kurir terpercaya.</p>
+      <p>Jika Anda memiliki pertanyaan lebih lanjut, jangan ragu untuk menghubungi kami melalui WhatsApp atau email yang tercantum di bawah.</p>
+    </div>
+    
+    <div id="product-section" class="product-grid">
+      <div class="product-card">
+        <img src="/api/placeholder/400/320" alt="Produk 1" class="product-image">
+        <div class="product-info">
+          <h3 class="product-title">Sepatu Olahraga Premium</h3>
+          <p class="product-price">Rp 599.000</p>
+          <a href="https://wa.me/6281234567890?text=Halo,%20saya%20tertarik%20dengan%20Sepatu%20Olahraga%20Premium" class="btn-whatsapp">Pesan via WhatsApp</a>
+        </div>
+      </div>
+      
+      <div class="product-card">
+        <img src="/api/placeholder/400/320" alt="Produk 2" class="product-image">
+        <div class="product-info">
+          <h3 class="product-title">Tas Ransel Multifungsi</h3>
+          <p class="product-price">Rp 349.000</p>
+          <a href="https://wa.me/6281234567890?text=Halo,%20saya%20tertarik%20dengan%20Tas%20Ransel%20Multifungsi" class="btn-whatsapp">Pesan via WhatsApp</a>
+        </div>
+      </div>
+      
+      <div class="product-card">
+        <img src="/api/placeholder/400/320" alt="Produk 3" class="product-image">
+        <div class="product-info">
+          <h3 class="product-title">Kacamata Hitam Stylish</h3>
+          <p class="product-price">Rp 199.000</p>
+          <a href="https://wa.me/6281234567890?text=Halo,%20saya%20tertarik%20dengan%20Kacamata%20Hitam%20Stylish" class="btn-whatsapp">Pesan via WhatsApp</a>
+        </div>
+      </div>
+      
+      <div class="product-card">
+        <img src="/api/placeholder/400/320" alt="Produk 4" class="product-image">
+        <div class="product-info">
+          <h3 class="product-title">Jam Tangan Sporty</h3>
+          <p class="product-price">Rp 489.000</p>
+          <a href="https://wa.me/6281234567890?text=Halo,%20saya%20tertarik%20dengan%20Jam%20Tangan%20Sporty" class="btn-whatsapp">Pesan via WhatsApp</a>
+        </div>
+      </div>
+      
+      <div class="product-card">
+        <img src="/api/placeholder/400/320" alt="Produk 5" class="product-image">
+        <div class="product-info">
+          <h3 class="product-title">Headphone Bluetooth</h3>
+          <p class="product-price">Rp 699.000</p>
+          <a href="https://wa.me/6281234567890?text=Halo,%20saya%20tertarik%20dengan%20Headphone%20Bluetooth" class="btn-whatsapp">Pesan via WhatsApp</a>
+        </div>
+      </div>
+      
+      <div class="product-card">
+        <img src="/api/placeholder/400/320" alt="Produk 6" class="product-image">
+        <div class="product-info">
+          <h3 class="product-title">Smartphone Terbaru</h3>
+          <p class="product-price">Rp 3.499.000</p>
+          <a href="https://wa.me/6281234567890?text=Halo,%20saya%20tertarik%20dengan%20Smartphone%20Terbaru" class="btn-whatsapp">Pesan via WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Tentang Kami</h3>
+          <p>Toko Online Keren adalah toko online terpercaya yang menyediakan berbagai produk berkualitas dengan harga bersaing. Kepuasan pelanggan adalah prioritas utama kami.</p>
+        </div>
+        
+        <div class="footer-section">
+          <h3>Informasi Kontak</h3>
+          <div class="contact-info">
+            <div class="contact-item">
+              <span>📱</span>
+              <span>+62 812-3456-7890</span>
+            </div>
+            <div class="contact-item">
+              <span>✉️</span>
+              <span>info@tokoonlinekeren.com</span>
+            </div>
+            <div class="contact-item">
+              <span>🏢</span>
+              <span>Jl. Contoh No. 123, Jakarta Selatan</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="footer-section">
+          <h3>Media Sosial</h3>
+          <div class="social-links">
+            <a href="https://instagram.com" class="social-link" target="_blank">📸</a>
+            <a href="https://github.com" class="social-link" target="_blank">🌐</a>
+            <a href="https://facebook.com" class="social-link" target="_blank">👍</a>
+            <a href="https://twitter.com" class="social-link" target="_blank">🐦</a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2025 Toko Online Keren. Semua hak dilindungi.</p>
+      </div>
+    </div>
+  </footer>
+  
+  <div class="weather-effect" id="weather-container"></div>
+  
+  <div class="music-player">
+    <div class="music-icon" id="music-icon">🔊</div>
+    <audio id="background-music" loop>
+      <source src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/collection/components/icon/icon.min.js">
+    </audio>
+  </div>
+  
+  <div class="scroll-top" id="scroll-top">
+    ⬆️
+  </div>
+  
+  <script>
+    // Create stars for dark mode
+    function createStars() {
+      const starsContainer = document.getElementById('stars-container');
+      starsContainer.innerHTML = '';
+      
+      for (let i = 0; i < 100; i++) {
+        const star = document.createElement('div');
+        star.classList.add('star');
+        
+        // Random position
+        star.style.left = `${Math.random() * 100}%`;
+        star.style.top = `${Math.random() * 100}%`;
+        
+        // Random size
+        const size = Math.random() * 3 + 1;
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+        
+        // Random animation delay
+        star.style.animationDelay = `${Math.random() * 2}s`;
+        
+        starsContainer.appendChild(star);
+      }
+    }
+    
+    // Theme Toggle
+    function toggleTheme() {
+      document.body.classList.toggle('dark-mode');
+      if (document.body.classList.contains('dark-mode')) {
+        createStars();
+      }
+    }
+    
+    // Music Player
+    const backgroundMusic = document.getElementById('background-music');
+    const musicIcon = document.getElementById('music-icon');
+    let isMusicPlaying = false;
+    
+    // Using a royalty-free music URL (usually this would be a real music file)
+    backgroundMusic.src = "https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/collection/components/icon/icon.min.js";
+    
+    // Autoplay music when page loads
+    window.addEventListener('load', function() {
+      createStars(); // Create stars initially
+      
+      try {
+        backgroundMusic.play().then(() => {
+          isMusicPlaying = true;
+          musicIcon.textContent = '🔊';
+        }).catch((error) => {
+          console.log("Autoplay prevented: ", error);
+          isMusicPlaying = false;
+          musicIcon.textContent = '🔇';
+        });
+      } catch (e) {
+        console.log("Autoplay error: ", e);
+      }
+    });
+    
+    function toggleMusic() {
+      if (isMusicPlaying) {
+        backgroundMusic.pause();
+        musicIcon.textContent = '🔇';
+      } else {
+        backgroundMusic.play().catch((e) => console.log("Play error: ", e));
+        musicIcon.textContent = '🔊';
+      }
+      isMusicPlaying = !isMusicPlaying;
+    }
+    
+    // Navigation
+    const homeBtn = document.getElementById('home-btn');
+    const infoBtn = document.getElementById('info-btn');
+    const infoSection = document.getElementById('info-section');
+    const productSection = document.getElementById('product-section');
+    
+    homeBt
